@@ -1,3 +1,5 @@
-# Laravel Quickstart - Intermediate - Task List With Authentication
+# Autenticação e Autorização
 
-http://laravel.com/docs/quickstart-intermediate
+## Token Authentication utilizando TokenGuard
+
+## Autorização com Entrust

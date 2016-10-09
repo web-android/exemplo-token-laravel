@@ -46,4 +46,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
   Route::get('/tasks', 'TaskController@index');
   Route::post('/task', 'TaskController@store');
   Route::delete('/task/{task}', 'TaskController@destroy');
+  Route::get('usuario/roles', 'RoleController@index');
+  Route::post('usuario/adicionar_role/{role}', 'RoleController@store');
+  Route::delete('usuario/remover_role/{role}', 'RoleController@destroy');
 });

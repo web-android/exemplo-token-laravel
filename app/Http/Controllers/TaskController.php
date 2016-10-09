@@ -78,12 +78,18 @@ class TaskController extends Controller
      * @param  Task  $task
      * @return Response
      */
-    public function destroy(Request $request, Task $task)
-    {
-        $this->authorize('destroy', $task);
-
-        $task->delete();
-
-        return redirect('/tasks');
+    public function destroy(Request $request, Task $task) {
+        if($this->user->id === $task->user_id){
+          if($this->user->can('remover-tarefa')){
+            $task->delete();
+            return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
+          }
+        }else if($this->user->can('remover-todas-tarefas')){
+            $task->delete();
+            return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
+        }
+        else{
+            return response()->json(['erro' => 'Você não possui permissões suficientes'], 401);
+        }
     }
 }

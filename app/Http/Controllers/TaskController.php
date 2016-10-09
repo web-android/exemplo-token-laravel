@@ -79,17 +79,39 @@ class TaskController extends Controller
      * @return Response
      */
     public function destroy(Request $request, Task $task) {
-        if($this->user->id === $task->user_id){
-          if($this->user->can('remover-tarefa')){
-            $task->delete();
-            return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
-          }
-        }else if($this->user->can('remover-todas-tarefas')){
-            $task->delete();
-            return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
+      //poderia ter utilizado um OR, mas quis simplificar para ilustrar
+      if($this->user->id === $task->user_id){
+        if($this->user->can('remover-tarefa')){
+          $task->delete();
+          return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
         }
-        else{
-            return response()->json(['erro' => 'Você não possui permissões suficientes'], 401);
-        }
+      }else if($this->user->can('remover-todas-tarefas')){
+          $task->delete();
+          return response()->json(['status' => 'Tarefa removida com sucesso'], 200);
+      }
+      else{
+          return response()->json(['erro' => 'Você não possui permissões suficientes'], 401);
+      }
     }
+
+    public function update(Request $request, Task $task) {
+      $params = $request->only("name");
+      //poderia ter utilizado um OR, mas quis simplificar para ilustrar
+      if($this->user->id === $task->user_id){
+        if($this->user->can('editar-tarefa')){
+          $task->name = $params["name"];
+          $task->save();
+          return response()->json(['status' => 'Tarefa editada com sucesso'], 200);
+        }
+      }else if($this->user->can('editar-todas-tarefas')){
+          $task->name = $params["name"];
+          $task->save();
+          return response()->json(['status' => 'Tarefa editada com sucesso'], 200);
+      }
+      else{
+          return response()->json(['erro' => 'Você não possui permissões suficientes'], 401);
+      }
+    }
+
+
 }

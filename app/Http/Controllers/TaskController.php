@@ -59,11 +59,16 @@ class TaskController extends Controller
             'name' => 'required|max:255',
         ]);
 
-        $request->user()->tasks()->create([
-            'name' => $request->name,
-        ]);
+        if($this->user->can('criar-tarefa')){
+          $this->user->tasks()->create([
+              'name' => $request->name,
+          ]);
+          return response()->json(['status' => 'Tarefa criada com sucesso'], 201);
+        }
+        else{
+          return response()->json(['erro' => 'Você não possui permissões suficientes'], 401);
+        }
 
-        return redirect('/tasks');
     }
 
     /**

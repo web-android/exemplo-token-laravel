@@ -24,18 +24,16 @@ class RoleController extends Controller {
 
   }
 
-  public function index(Request $request)
-  {
-      return response()->json(['roles' => $this->user->roles()]);
-
+  public function index(Request $request) {
+    return response()->json(['roles' => $this->user->roles()->get()]);
   }
 
 
   public function store(Request $request, Role $role)  {
-      if(! $this->user->hasRole($role->name)){
-        $this->user->attachRole($role);
-      }
-      return response()->json(['roles' => $this->user->roles()->get()]);
+    if(! $this->user->hasRole($role->name)){
+      $this->user->attachRole($role);
+    }
+    return response()->json(['roles' => $this->user->roles()->get()]);
   }
 
 

@@ -63,11 +63,14 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'api_token' => str_random(60),
         ]);
+        $role_criador = Role::where("name", "criador")->first();
+        $user->attachRole($role_criador);
+        return $user;
     }
 }

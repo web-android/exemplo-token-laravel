@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use App\Task;
 use App\Repositories\TaskRepository;
 
@@ -19,6 +20,9 @@ class TaskController extends Controller
      */
     protected $tasks;
 
+
+    protected $user;
+
     /**
      * Create a new controller instance.
      *
@@ -27,9 +31,8 @@ class TaskController extends Controller
      */
     public function __construct(TaskRepository $tasks)
     {
-        $this->middleware('auth');
-
         $this->tasks = $tasks;
+        $this->user =  Auth::guard('api')->user();;
     }
 
     /**
@@ -40,9 +43,8 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        return view('tasks.index', [
-            'tasks' => $this->tasks->forUser($request->user()),
-        ]);
+        return response()->json(['tasks' => $this->tasks->forUser($this->user)]);
+
     }
 
     /**

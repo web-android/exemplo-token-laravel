@@ -22,19 +22,24 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::group(['middleware' => ['web']], function () {
 
     Route::get('/', function () {
         return view('welcome');
     })->middleware('guest');
 
-    Route::get('/tasks', 'TaskController@index');
-    Route::post('/task', 'TaskController@store');
-    Route::delete('/task/{task}', 'TaskController@destroy');
+    // Route::get('/tasks', 'TaskController@index');
+    // Route::post('/task', 'TaskController@store');
+    // Route::delete('/task/{task}', 'TaskController@destroy');
 
     Route::auth();
-
+    Route::get('/get_token', function (Request $request) {
+        return response()->json(['token' => $request->user()->api_token]);
+    });
 });
+
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {

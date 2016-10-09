@@ -15,5 +15,6 @@ class VerifyCsrfToken extends BaseVerifier
         "api/v1/*",
         "login",
         "register",
+        "criar_usuario",
     ];
 }

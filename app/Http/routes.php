@@ -26,19 +26,29 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    })->middleware('guest');
 
-    Route::auth();
-    Route::get('/get_token', function (Request $request) {
-        return response()->json(['token' => $request->user()->api_token]);
-    });
+
+
+    //Criar usuario
+    Route::post('/criar_usuario', 'CreateUserController@store');
+    //TODO - Criar rota para atualizar dados do usuário
+
+
+    //Rotas de Autenticação Web - Serão removidas
+    // Route::auth();
+    // Route::get('/get_token', function (Request $request) {
+    //     return response()->json(['token' => $request->user()->api_token]);
+    // });
+    // Route::get('/', function () {
+    //     return view('welcome');
+    // })->middleware('guest');
 });
 
 
 
 Route::group(['prefix' => 'api/v1', 'middleware' => 'auth:api'], function () {
+
+  //Tarefas
   Route::get('/tasks', 'TaskController@index');
   Route::post('/task', 'TaskController@store');
   Route::delete('/task/{task}', 'TaskController@destroy');
